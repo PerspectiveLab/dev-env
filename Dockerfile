@@ -36,6 +36,9 @@ RUN nvim -c 'q'
 COPY pkgs.txt /tmp/pkgs.txt
 RUN cat /tmp/pkgs.txt | xargs yay -S --noconfirm
 
+# Add dev to the docker group
+RUN sudo groupadd docker && sudo usermod -aG docker dev
+
 # Clean up files
 RUN sudo rm -rf /tmp/*
 
