@@ -18,10 +18,13 @@ RUN git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin \
     && cd /tmp/yay-bin \
     && makepkg -si --noconfirm
 RUN yay -S --noconfirm flutter
+RUN sudo chown -R dev /opt/flutter
+RUN flutter channel stable
 
 # Setup zsh config
 RUN git clone https://github.com/chinarjoshi/dotfiles /tmp/dotfiles \
     && mv /tmp/dotfiles/zsh ~/.config/zsh \
+    && rm -f ~/.config/zsh/.zshenv \
     && echo 'export ZDOTDIR=~/.config/zsh' > ~/.zshenv
 COPY p10k-instant-prompt.zsh /home/dev/.cache/p10k-instant-prompt-c.zsh
 COPY gitstatusd /home/dev/.cache/gitstatus/gitstatusd-linux-x86_64
@@ -34,10 +37,13 @@ RUN nvim -c 'q'
 
 # Install rest of packages
 COPY pkgs.txt /tmp/pkgs.txt
-RUN cat /tmp/pkgs.txt | xargs yay -S --noconfirm
+RUN cat /tmp/pkgs.txt | xargs yay -Syu --noconfirm
 
 # Add dev to the docker group
 RUN sudo groupadd docker && sudo usermod -aG docker dev
+
+# Start docker socket
+RUN sudo systemctl enable docker.socket --now
 
 # Clean up files
 RUN sudo rm -rf /tmp/*

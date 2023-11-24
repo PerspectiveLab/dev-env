@@ -1,6 +1,7 @@
 lf
 fd
 jq
+npm
 bat
 fzf
 tree
@@ -8,10 +9,8 @@ man-db
 tealdeer
 expect
 ripgrep
-git-delta
 neovim-telescope-fzf-native-git
 
-python
-python-pip
-flake8
-npm
+docker
+docker-compose
+heroku-cli-bin
