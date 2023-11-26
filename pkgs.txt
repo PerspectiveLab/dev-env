@@ -1,6 +1,5 @@
 lf
 fd
-jq
 npm
 bat
 fzf

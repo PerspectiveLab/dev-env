@@ -29,6 +29,7 @@ RUN git clone https://github.com/chinarjoshi/dotfiles /tmp/dotfiles \
 COPY p10k-instant-prompt.zsh /home/dev/.cache/p10k-instant-prompt-c.zsh
 COPY gitstatusd /home/dev/.cache/gitstatus/gitstatusd-linux-x86_64
 RUN sudo chown dev /home/dev/.cache/*
+ENV CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
 
 # Setup neovim config
 RUN sudo pacman -S --noconfirm neovim
@@ -40,10 +41,7 @@ COPY pkgs.txt /tmp/pkgs.txt
 RUN cat /tmp/pkgs.txt | xargs yay -Syu --noconfirm
 
 # Add dev to the docker group
-RUN sudo groupadd docker && sudo usermod -aG docker dev
-
-# Start docker socket
-RUN sudo systemctl enable docker.socket --now
+RUN sudo usermod -aG docker dev
 
 # Clean up files
 RUN sudo rm -rf /tmp/*
